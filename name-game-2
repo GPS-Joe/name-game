@@ -1,0 +1,141 @@
+import java.util.Arrays;
+import java.util.Random;
+
+//Program to play the name game
+/**
+ * 
+ * Ask the user if they want to play a game.
+ * If they want to they pick a which game, ask for their name
+ * and change its first letter to make a rhyming word or alphabetize the letters
+ * 
+ * @author josephhughes
+ */
+
+public class FinalProject extends ConsoleProgram {
+    public void run() {
+        do {
+            /**
+             * 
+             * Communicates with the user to get them to use "rhymer()"
+             * 
+             * @param answer    yes or no answer to question
+             * @param answer    1 or 2 answer to question
+             */
+            String answer = readLine("Do you want to play a name game?: (y/n)\n");
+            if (answer.matches("[yYyesYesYEStrueTrueTRUEsureSureSUREokOkOKokayOkayOKAY]+"))
+            /**
+             * user can input y, Y, yes, Yes, YES, true, True, TRUE,
+             * sure, Sure, SURE, ok, Ok, OK, okay, Okay, or OKAY
+             * as y responses to play the game just in case
+             */
+            {
+                System.out.println("\nOk!\n");
+                do {
+                    String answer2 = readLine("Do you want to play Rhymer (1) or Alphabetter (2)?:\n(answer 1 or 2)\n");
+                    if (answer2.matches("[1oneOneONE]+"))
+                    {
+                        System.out.println("\nOk, lets play Rhymer.\n");
+                        rhymer();   //transfers to rhyming game
+                        break;
+                    } else if (answer2.matches("[2twoTwoTWO]+"))
+                    {
+                        System.out.println("\nOk, lets play Alphabetter.\n");
+                        alphabetter();  //transfers to alphabetizing game
+                        break;
+                    } else
+                    {
+                        System.out.println("\nSorry, I can't understand you.\nPlease respond y or n.\n"); //provides catch in case user inputs something incorrect
+                        continue;
+                    }
+                } while (true);
+            } else if (answer.matches("[nNnoNoNOfalseFalseFALSE]+"))
+            /**
+             * user can input n, N, no, No, NO, false, False, FALSE 
+             * as y responses to play the game just in case
+             */
+            {
+                System.out.println("\nOk, goodbye!\n");
+                System.exit(0); //end of program
+                break;
+            } else {
+                System.out.println("\nSorry, I can't understand you.\nPlease respond y or n.\n"); //provides catch in case user inputs something incorrect
+                continue;
+            }
+        } while (true);
+    }
+
+    public void rhymer() {
+        do {
+            /**
+             * 
+             * takes user input and changes the first letter to a different letter
+             * 
+             * @param userName  read from user input
+             * @param rhyme empty to store word that will be returned
+             * @param alphabet  base for list of acceptable replace characters
+             * @param firstLetter   converts char from beginning of "userName" to string
+             * @param alphabetNew   alphabet without "firstLetter"
+             * @param randomChar    draws random letter from "alphabetNew"
+             * 
+             */
+            String userName = readLine("Type in your first name: ");
+            String rhyme = "";
+            if (!userName.matches("[a-zA-Z]+")) {
+                System.out.println("\nYour name contains numbers, more than one word,\nor other foreign characters, try again.\n");
+                /**
+                 * you can't rhyme with numbers or punctuation,
+                 * this provides catch if word is outside alphabetical bounds
+                 */
+            } else if (userName.length() < 2) {
+                System.out.println("\nYour name is too short to rhyme, try again.\n");
+                /**
+                 * you can't rhyme with one letter, 
+                 * this provides catch if word is shorter than 2 letter
+                 */
+            } else {
+                Random rnd = new Random(); //implements "java.util.Random"
+                String alphabet = "abcdefghijklmnopqrstuvwxyz";
+                String firstLetter = String.valueOf(userName.toLowerCase().charAt(0));
+                String alphabetNew = alphabet.replaceFirst(firstLetter, "");
+                char randomChar = alphabetNew.charAt(rnd.nextInt(alphabetNew.length()));
+                rhyme = randomChar + userName.substring(1); //appends username without first letter to "randomChar"
+                System.out.println("\nYour name, " + userName + ", rhymes with " + rhyme + ".\n");
+                break; //leaves "rhymer()" to return to run.
+            }
+        } while (true);
+    }
+    
+    public void alphabetter()
+    {
+        do {
+            /**
+             * 
+             * takes user input arranges the letters in alphabetical order
+             * 
+             * @param userName  read from user input
+             * @param charArray   converts "userName" to array of characters
+             * @param sortedName   collects characters that have been put in alphabetical order into a string
+             * 
+             */
+            String userName = readLine("Type in your first name: ");
+                if (!userName.matches("[a-zA-Z]+")) {
+                    System.out.println("\nYour name contains numbers, more than one word,\nor other foreign characters, try again.\n");
+                    /**
+                     * I don't want it to sort strings with numbers or punctuation,
+                     * this provides catch if word is outside alphabetical bounds
+                     */
+                } else if (userName.length() < 2) {
+                    System.out.println("\nYour name is too short \nto sort alphabetically, try again.\n");
+                    /**
+                     * this provides catch if word is shorter than 2 letter
+                     */
+                } else {
+                    char[] charArray = userName.toLowerCase().toCharArray();
+                    Arrays.sort(charArray); //sorts characters alphabetically
+                    String sortedName = new String(charArray);
+                    System.out.println("\nYour name, " + userName + ", is " + sortedName + " in alphabetical order.\n");
+                    break; //leaves "alphabetter()" to return to run.
+                }
+        } while (true);
+    }
+}
